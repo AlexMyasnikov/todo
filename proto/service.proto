@@ -11,19 +11,19 @@ service todo{
   rpc GetAllToDo(GetAllRequest) returns (GetAllResponse);
 }
 
-message ToDo{
+
+message CreateRequest{
   int64 id = 1;
   string name = 2;
   string description = 3;
   bool status = 4;
 }
 
-message CreateRequest{
-  ToDo todo = 1;
-}
-
 message CreateResponse{
-  ToDo todo = 1;
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
 }
 
 message DeleteRequest{
@@ -39,7 +39,10 @@ message GetByIdRequest{
 }
 
 message GetByIdResponse{
-  ToDo todo = 1;
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
 }
 
 message GetAllRequest{
@@ -47,7 +50,10 @@ message GetAllRequest{
 }
 
 message GetAllResponse{
-  repeated ToDo todos = 1;
+  repeated int64 id = 1;
+  repeated string name= 2;
+  repeated string description = 3;
+  repeated bool status = 4;
 }
 
 message MarkAsDoneRequest{
@@ -55,5 +61,8 @@ message MarkAsDoneRequest{
 }
 
 message MarkAsDoneResponse{
-  ToDo todo = 1;
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
 }
