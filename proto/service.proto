@@ -51,7 +51,7 @@ message DeleteRequest{
 }
 
 message DeleteResponse{
-  string message = 1;
+  bool exist = 1;
 }
 
 message GetByIdRequest{
