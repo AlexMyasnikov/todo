@@ -4,13 +4,20 @@ package todoService;
 option go_package = "/services";
 
 service todo{
-  //Add Update
   rpc CreateToDo(CreateRequest) returns (CreateResponse);
+  rpc UpdateToDo(UpdateRequest) returns (UpdateResponse);
   rpc DeleteToDo(DeleteRequest) returns (DeleteResponse);
   rpc GetToDoById(GetByIdRequest) returns (GetByIdResponse);
   rpc GetAllToDo(GetAllRequest) returns (GetAllResponse);
+  rpc MarkAsDone(MarkAsDoneRequest) returns (MarkAsDoneResponse);
 }
 
+message ToDo{
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+}
 
 message CreateRequest{
   int64 id = 1;
@@ -20,6 +27,19 @@ message CreateRequest{
 }
 
 message CreateResponse{
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  bool status = 4;
+}
+
+message UpdateRequest{
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message UpdateResponse{
   int64 id = 1;
   string name = 2;
   string description = 3;
@@ -46,14 +66,10 @@ message GetByIdResponse{
 }
 
 message GetAllRequest{
-  string message = 1;
 }
 
 message GetAllResponse{
-  repeated int64 id = 1;
-  repeated string name= 2;
-  repeated string description = 3;
-  repeated bool status = 4;
+  repeated ToDo todo = 1;
 }
 
 message MarkAsDoneRequest{

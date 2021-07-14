@@ -46,16 +46,31 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Println(response)
-
+			fmt.Printf("%d %s %s %t", response.Id, response.Name, response.Description, response.Status)
 		}
-	case "delete":
+	case "update":
 		{
-			id, err := strconv.ParseInt(os.Args[2], 10, 64)
+			id, err := strconv.ParseInt(args[2], 10, 64)
+			name := args[3]
+			description := args[4]
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			request := &pb.DeleteRequest{Id: int64(id)}
+			request := &pb.UpdateRequest{Id: id, Name: name, Description: description}
+
+			response, err := client.UpdateToDo(context.Background(), request)
+			if err != nil {
+				grpclog.Fatalf("%v", err)
+			}
+			fmt.Printf("%d %s %s %t", response.Id, response.Name, response.Description, response.Status)
+		}
+	case "delete":
+		{
+			id, err := strconv.ParseInt(args[2], 10, 64)
+			if err != nil {
+				grpclog.Fatalf("%v", err)
+			}
+			request := &pb.DeleteRequest{Id: id}
 
 			response, err := client.DeleteToDo(context.Background(), request)
 			if err != nil {
@@ -66,7 +81,7 @@ func main() {
 
 	case "get":
 		{
-			id, err := strconv.ParseInt(os.Args[2], 10, 64)
+			id, err := strconv.ParseInt(args[2], 10, 64)
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
@@ -74,11 +89,36 @@ func main() {
 
 			response, err := client.GetToDoById(context.Background(), request)
 			if err != nil {
-				fmt.Printf("%v", err)
+				grpclog.Fatalf("%v", err)
 			}
-			fmt.Println(response)
+			fmt.Printf("%d %s %s %t", response.Id, response.Name, response.Description, response.Status)
+		}
+	case "getall":
+		{
+			request := &pb.GetAllRequest{}
+			response, err := client.GetAllToDo(context.Background(), request)
+			if err != nil {
+				grpclog.Fatalf("%v", err)
+			}
+			for i := range response.Todo {
+				fmt.Printf("%d %s %s %t", response.Todo[i].Id, response.Todo[i].Name, response.Todo[i].Description, response.Todo[i].Status)
+			}
 		}
 
+	case "done":
+		{
+			id, err := strconv.ParseInt(args[2], 10, 64)
+			if err != nil {
+				grpclog.Fatalf("%v", err)
+			}
+			request := &pb.MarkAsDoneRequest{Id: id}
+
+			response, err := client.MarkAsDone(context.Background(), request)
+			if err != nil {
+				grpclog.Fatalf("%v", err)
+			}
+			fmt.Printf("%d %s %s %t", response.Id, response.Name, response.Description, response.Status)
+		}
 	}
 
 }
