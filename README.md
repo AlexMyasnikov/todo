@@ -3,7 +3,7 @@
 
 Запуск сервера: go run server/main.go
 
-Запуск клиента: go run client/main.go "ввод команд" 
+Запуск клиента: go run client/main.go "ввод команды" 
 # Команды:
 1. Создать: create название описание  
 2. Редактировать: update id
