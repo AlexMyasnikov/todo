@@ -1,7 +1,6 @@
 package data
 
 import (
-	"fmt"
 	pb "github.com/ChuvashPeople/todo/services"
 )
 
@@ -31,7 +30,7 @@ func (db *FakeDb) Create(r *pb.CreateRequest) Todo {
 	}
 
 	todo := Todo{Id: id, Name: r.Name, Description: r.Description, Status: false}
-	db.Todos = append(db.Todos, Todo{Id: id, Name: r.Name, Description: r.Description, Status: false})
+	db.Todos = append(db.Todos, todo)
 	return todo
 }
 
@@ -40,24 +39,23 @@ func (db *FakeDb) Update(r *pb.UpdateRequest) Todo {
 	for i, t := range db.Todos {
 		if r.Id == t.Id {
 			if len(db.Todos)-i == 1 {
-				db.Todos = append(db.Todos[:i-1])
+				db.Todos = append(db.Todos[:i])
 			} else {
 				db.Todos = append(db.Todos[:i], db.Todos[i+1:]...)
 			}
 			todo = Todo{Id: r.Id, Name: r.Name, Description: r.Description}
-			db.Todos = append(db.Todos, Todo{Id: r.Id, Name: r.Name, Description: r.Description})
+			db.Todos = append(db.Todos, todo)
 			break
 		}
 	}
 	return todo
 }
 
-func (db *FakeDb) Delete(r *pb.DeleteRequest) {
+func (db *FakeDb) Delete(r *pb.DeleteRequest) bool {
 	var exist = false
 	for i, t := range db.Todos {
 		if t.Id == r.Id {
 			exist = true
-			fmt.Println(i)
 			if len(db.Todos)-i == 1 {
 				db.Todos = append(db.Todos[:i])
 			} else {
@@ -65,9 +63,7 @@ func (db *FakeDb) Delete(r *pb.DeleteRequest) {
 			}
 		}
 	}
-	if exist == false {
-		panic("To do list with this ID doesn't exist")
-	}
+	return exist
 }
 
 func (db *FakeDb) Get(r *pb.GetByIdRequest) Todo {
@@ -94,6 +90,5 @@ func (db *FakeDb) Done(r *pb.MarkAsDoneRequest) Todo {
 			break
 		}
 	}
-
 	return todo
 }

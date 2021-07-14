@@ -46,7 +46,11 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n", response.Id, response.Name, response.Description, response.Status)
+			fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n",
+				response.Id,
+				response.Name,
+				response.Description,
+				response.Status)
 		}
 	case "update":
 		{
@@ -62,7 +66,15 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n", response.Id, response.Name, response.Description, response.Status)
+			if response.Id != 0 {
+				fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n",
+					response.Id,
+					response.Name,
+					response.Description,
+					response.Status)
+			} else {
+				fmt.Printf("To do with ID-%d doesn't exist\n", id)
+			}
 		}
 	case "delete":
 		{
@@ -76,7 +88,11 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Printf("%s", response)
+			if response.Exist == true {
+				fmt.Printf("To do list with ID-%d has been deleted\n", id)
+			} else {
+				fmt.Printf("To do with ID-%d doesn't exist\n", id)
+			}
 		}
 
 	case "get":
@@ -91,7 +107,15 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n", response.Id, response.Name, response.Description, response.Status)
+			if response.Id != 0 {
+				fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n",
+					response.Id,
+					response.Name,
+					response.Description,
+					response.Status)
+			} else {
+				fmt.Printf("To do with ID-%d doesn't exist\n", id)
+			}
 		}
 	case "getall":
 		{
@@ -102,7 +126,11 @@ func main() {
 			}
 			fmt.Printf("%s", "To do lists:\n")
 			for i := range response.Todo {
-				fmt.Printf("=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n", response.Todo[i].Id, response.Todo[i].Name, response.Todo[i].Description, response.Todo[i].Status)
+				fmt.Printf("=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n",
+					response.Todo[i].Id,
+					response.Todo[i].Name,
+					response.Todo[i].Description,
+					response.Todo[i].Status)
 			}
 		}
 
@@ -118,8 +146,18 @@ func main() {
 			if err != nil {
 				grpclog.Fatalf("%v", err)
 			}
-			fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n", response.Id, response.Name, response.Description, response.Status)
+			if response.Id != 0 {
+				fmt.Printf("To do list:\n=================\nID:%d,\nName: %s,\nDescription: %s,\nStatus: %t\n",
+					response.Id,
+					response.Name,
+					response.Description,
+					response.Status)
+			} else {
+				fmt.Printf("To do with ID-%d doesn't exist\n", id)
+			}
 		}
+	default:
+		fmt.Printf("This command doesn't exist\n")
 	}
 
 }

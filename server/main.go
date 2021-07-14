@@ -45,8 +45,8 @@ func (s *Server) UpdateToDo(ctx context.Context, request *pb.UpdateRequest) (*pb
 }
 
 func (s *Server) DeleteToDo(ctx context.Context, request *pb.DeleteRequest) (*pb.DeleteResponse, error) {
-	s.db.Delete(request)
-	return &pb.DeleteResponse{Message: "Element delete"}, nil
+	exist := s.db.Delete(request)
+	return &pb.DeleteResponse{Exist: exist}, nil
 }
 
 func (s *Server) GetToDoById(ctx context.Context, request *pb.GetByIdRequest) (*pb.GetByIdResponse, error) {
