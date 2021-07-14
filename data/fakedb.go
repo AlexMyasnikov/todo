@@ -87,12 +87,13 @@ func (db *FakeDb) GetAll() []Todo {
 
 func (db *FakeDb) Done(r *pb.MarkAsDoneRequest) Todo {
 	var todo Todo
-	for _, t := range db.Todos {
-		if t.Id == r.Id {
-			t.Status = true
-			todo = t
+	for i := range db.Todos {
+		if db.Todos[i].Id == r.Id {
+			db.Todos[i].Status = true
+			todo = db.Todos[i]
 			break
 		}
 	}
+
 	return todo
 }
